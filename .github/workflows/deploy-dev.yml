@@ -1,10 +1,13 @@
-name: Deploy to VPS
+name: Deploy Dev Branch to VPS on PR
 
 on:
   pull_request:
     branches:
-      - dev   # Deploy to dev environment
-      - main  # Deploy to prod environment
+      - dev  # Trigger on pull request targeting the 'dev' branch
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 jobs:
   wait-for-checks:
@@ -21,6 +24,7 @@ jobs:
     name: Deploy Application
     runs-on: ubuntu-20.04
     needs: wait-for-checks  # Ensures Checks workflow completes first
+    if: success()  # Only run if the Checks workflow is successful
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
