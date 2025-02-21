@@ -15,7 +15,15 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Set env variable
+        id: env
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "DEPLOY_ENV=prod" >> $GITHUB_ENV
+          else
+            echo "DEPLOY_ENV=dev" >> $GITHUB_ENV
+          fi
       - name: Test
-        run: docker compose run --rm app sh -c "python manage.py test" 
+        run: docker compose run --rm app-${{ env.DEPLOY_ENV }} sh -c "python manage.py test" 
       - name: Lint
-        run: docker compose run --rm app sh -c "flake8"
+        run: docker compose run --rm app-${{ env.DEPLOY_ENV }} sh -c "flake8"
