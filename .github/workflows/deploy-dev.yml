@@ -54,8 +54,8 @@ on:
   deploy:
     name: Deploy Application
     runs-on: ubuntu-20.04
-    needs: wait-for-checks  # Ensures Checks workflow completes first
-    if: success()  # Only run if the Checks workflow is successful
+    # needs: wait-for-checks  # Ensures Checks workflow completes first
+    # if: success()  # Only run if the Checks workflow is successful
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

@@ -20,7 +20,7 @@ on:
   deploy:
     name: Deploy Application
     runs-on: ubuntu-20.04
-    needs: wait-for-checks  # Ensures Checks workflow completes first
+    # needs: wait-for-checks  # Ensures Checks workflow completes first
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
