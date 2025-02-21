@@ -6,17 +6,7 @@ on:
       # - dev   # Deploy to dev environment
       - main  # Deploy to prod environment
 
-# jobs:
-#   wait-for-checks:
-#     name: Wait for Checks Workflow
-#     runs-on: ubuntu-20.04
-#     needs: []
-#     steps:
-#       - name: Wait for Checks Workflow
-#         uses: hmarr/auto-approve-action@v3
-#         with:
-#           github-token: ${{ secrets.GH_TOKEN }}
-
+jobs: 
   deploy:
     name: Deploy Application
     runs-on: ubuntu-20.04
