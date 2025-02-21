@@ -1,11 +1,23 @@
 services:
-  app:
+  app-dev:
     build:
       context: .
       args:
         DEV: "True"
     ports:
       - '8000:8000'
+    volumes:
+      - ./app:/app
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+
+  app-prod:
+    build:
+      context: .
+      args:
+        DEV: "False"
+    ports:
+      - '8001:8000'
     volumes:
       - ./app:/app
     command: >
