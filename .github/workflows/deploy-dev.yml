@@ -1,3 +1,4 @@
+---
 name: Deploy Dev Branch to VPS on PR
 
 on:
@@ -10,7 +11,6 @@ on:
       - reopened
 
 jobs:
-
   deploy:
     name: Deploy Application
     runs-on: ubuntu-20.04

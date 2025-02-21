@@ -1,16 +1,15 @@
+---
 name: Deploy to prod environment
 
 on:
   pull_request_target:
     branches:
-      # - dev   # Deploy to dev environment
       - main  # Deploy to prod environment
 
 jobs: 
   deploy:
     name: Deploy Application
     runs-on: ubuntu-20.04
-    # needs: wait-for-checks  # Ensures Checks workflow completes first
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
