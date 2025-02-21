@@ -9,22 +9,11 @@ on:
       - synchronize
       - reopened
 
-# jobs:
-#   wait-for-checks:
-#     name: Wait for Checks Workflow
-#     runs-on: ubuntu-20.04
-#     needs: []
-#     steps:
-#       - name: Wait for Checks Workflow
-#         uses: hmarr/auto-approve-action@v3
-#         with:
-#           github-token: ${{ secrets.GH_TOKEN }}
+jobs:
 
   deploy:
     name: Deploy Application
     runs-on: ubuntu-20.04
-    # needs: wait-for-checks  # Ensures Checks workflow completes first
-    # if: success()  # Only run if the Checks workflow is successful
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
