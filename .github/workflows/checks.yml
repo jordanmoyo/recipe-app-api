@@ -26,5 +26,5 @@ jobs:
       - name: Test
         run: docker compose run --rm app-${{ env.DEPLOY_ENV }} sh -c "python manage.py test" 
       - name: Lint
-        if: env.DEPLOY_ENV == 'dev'
+        if: env.DEPLOY_ENV != 'prod'
         run: docker compose run --rm app-${{ env.DEPLOY_ENV }} sh -c "flake8"

@@ -1,0 +1,54 @@
+name: Deploy to VPS
+
+on:
+  pull_request:
+    branches:
+      # - dev   # Deploy to dev environment
+      - main  # Deploy to prod environment
+
+jobs:
+  wait-for-checks:
+    name: Wait for Checks Workflow
+    runs-on: ubuntu-20.04
+    needs: []
+    steps:
+      - name: Wait for Checks Workflow
+        uses: hmarr/auto-approve-action@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  deploy:
+    name: Deploy Application
+    runs-on: ubuntu-20.04
+    needs: wait-for-checks  # Ensures Checks workflow completes first
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set deployment environment
+        id: env
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "DEPLOY_ENV=prod" >> $GITHUB_ENV
+          else
+            echo "DEPLOY_ENV=dev" >> $GITHUB_ENV
+          fi
+
+      - name: Setup SSH access
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.VPS_SSH_PRIVATE_KEY }}
+
+      - name: Copy project to VPS
+        run: |
+          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" \
+          ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/${{ secrets.VPS_USER }}/${{ secrets.APP_NAME }}-${{ env.DEPLOY_ENV }}
+
+      - name: Deploy on VPS
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << EOF
+            cd /home/${{ secrets.VPS_USER }}/${{ secrets.APP_NAME }}-${{ env.DEPLOY_ENV }}
+            docker compose down || true
+            docker compose build --no-cache
+            docker compose up -d app-${{ env.DEPLOY_ENV }}
+          EOF
