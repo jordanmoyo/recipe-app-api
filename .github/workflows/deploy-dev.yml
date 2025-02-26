@@ -34,12 +34,12 @@ jobs:
 
       - name: Copy project to VPS
         run: |
-          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" \
+          rsync -avz --delete -e "ssh -vvv -o StrictHostKeyChecking=no" \
           ./ ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/${{ secrets.VPS_USER }}/${{ secrets.APP_NAME }}-${{ env.DEPLOY_ENV }}
 
       - name: Deploy on VPS
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << EOF
+          ssh -vvv -o StrictHostKeyChecking=no ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << EOF
             cd /home/${{ secrets.VPS_USER }}/${{ secrets.APP_NAME }}-${{ env.DEPLOY_ENV }}
             docker compose down || true
             docker compose build --no-cache

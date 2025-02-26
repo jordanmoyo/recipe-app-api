@@ -10,17 +10,24 @@ WORKDIR /app
 EXPOSE 8000
 
 ARG DEV=false
+
+# Install necessary dependencies for PostgreSQL, psycopg3, and other tools postgres-client
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
+    apk add --update --no-cache postgresql-client && \
+    apk add --update --no-cache postgresql-libs \
+    postgresql-dev \
+    musl-dev \
+    build-base &&\
     /py/bin/pip install -r /tmp/requirements.txt && \
     if [ "$DEV" = "True" ]; then \
         /py/bin/pip install -r /tmp/requirements.dev.txt; \
     fi && \
     rm -rf /tmp && \
-    adduser \
-        --disabled-password \
-        --no-create-home \
-        django-user
+    # Clean up unnecessary build dependencies
+    apk del musl-dev postgresql-dev build-base && \
+    # Create a non-root user for security
+    adduser --disabled-password --no-create-home django-user
 
 ENV PATH="/py/bin:$PATH"
 USER django-user
