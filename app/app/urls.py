@@ -19,14 +19,14 @@ from drf_spectacular.views import (  # type: ignore
     SpectacularSwaggerView,
 )
 from django.contrib import admin  # type: ignore
-from django.urls import path  # type: ignore
+from django.urls import path, include  # type: ignore
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/schema/', SpectacularAPIView.as_view(), name='api-schema'),
-    path(
-        'api/docs/',
+    path('api/docs/',
         SpectacularSwaggerView.as_view(url_name='api-schema'),
         name='api-docs'
     ),
+    path('api/user/', include('user.urls')),
 ]
