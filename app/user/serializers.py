@@ -1,9 +1,9 @@
 """
 Serializers for the user API views.
 """
-from django.contrib.auth import(  # type: ignore
-     get_user_model,
-     authenticate
+from django.contrib.auth import (  # type: ignore
+    get_user_model,
+    authenticate
 )
 from django.utils.translation import gettext as _  # type: ignore
 
@@ -63,5 +63,3 @@ class AuthTokenSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs
-
-

@@ -90,7 +90,7 @@ class PublicUserApiTests(TestCase):
         """Test that token is not created if invalid credentials are given"""
         user_details = {
             'email': 'test@example.com',
-            'password':'good_pass',
+            'password': 'good_pass',
             'name': 'Test Name'
         }
         create_user(**user_details)
@@ -98,7 +98,7 @@ class PublicUserApiTests(TestCase):
             'email': user_details['email'],
             'password': 'wrong_pass'
         }
-        res = self.client.post(TOKEN_URL, payload) # try to get token
+        res = self.client.post(TOKEN_URL, payload)  # try to get token
 
         self.assertNotIn('token', res.data)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
@@ -119,6 +119,7 @@ class PublicUserApiTests(TestCase):
         res = self.client.get(ME_URL)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
 
 class PrivateUserApiTests(TestCase):
     """Test API requests that require authentication"""

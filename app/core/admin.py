@@ -1,11 +1,11 @@
 """
 Django admin module for core app(Customization).
 """
-from django.contrib import admin  # noqa # type: ignore
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin  # noqa # type: ignore
-from django.utils.translation import gettext as _  # noqa # type: ignore
+from django.contrib import admin  # type: ignore
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin  # type:ignore
+from django.utils.translation import gettext as _   # type: ignore
 
-from core import models  # noqa # type: ignore
+from core import models   # type: ignore
 
 
 class UserAdmin(BaseUserAdmin):
@@ -42,3 +42,4 @@ class UserAdmin(BaseUserAdmin):
 
 
 admin.site.register(models.User, UserAdmin)
+admin.site.register(models.Recipe)
